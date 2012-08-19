@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	var boardContainer = $(".board"),
 	    equationTemplate = $("#equation-template").html();
-	
+	var board;
 	$(".play_button").on("click", function() {
 		var self = $(this);
 		self.animate({
@@ -12,10 +12,22 @@ $(document).ready(function() {
     		boardContainer.animate({
     			height:"+=420"
     		}, 600, function () {
-    			var board = new Board(boardContainer, equationTemplate);
+    			board = new Board(boardContainer, equationTemplate);
     			board.start();
+    			assignKeyListener();
     		} );
 		});
 	});
+
+	function assignKeyListener() {
+		console.log(board);
+		$('body').keydown(function(event) {
+			var keyString = String.fromCharCode(event.keyCode);
+			var intValue = +keyString;
+			if (!isNaN(intValue)) {
+				board.keyPressed(intValue);
+			}
+		});
+}
 
  });
