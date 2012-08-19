@@ -10,19 +10,15 @@
 <script type="text/javascript" src="../js/equation.js"></script>
 
 <script id="equation-template" type="text/x-handlebars-template">
-	<span class="equation" id={{id}}>
-		<p class="operand">{{first}}</p>
-		<p class="operation">{{operation}}</p>
-		<p class="operand">{{second}}</p>
-	</span>
 </script>
 
 <html>
 
 <body>
-<div class="board">
-	<img class="play_button" src="../assets/play.png"> 
-</div>
+ <div class="board">
+	<img class="play_button" src="../assets/play.png">
+	<canvas id="boardCanvas" width="600" height="620"></canvas>
+</div> 
 
 </body>
 </html>

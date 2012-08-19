@@ -1,5 +1,8 @@
-p {
-	margin: 0px;
+body, html { padding: 0; margin: 0; }
+
+#boardCanvas {
+	display: none;
+	position: relative;
 }
 
 .board {
@@ -23,6 +26,8 @@ p {
 .equation {
 	position: relative;
 	display: inline-block;
+	margin-top: 0px;
+	float: left;
 }
 
 .equation > p {

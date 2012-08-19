@@ -12,7 +12,9 @@ $(document).ready(function() {
     		boardContainer.animate({
     			height:"+=420"
     		}, 600, function () {
-    			board = new Board(boardContainer, equationTemplate);
+    			$("#boardCanvas").show();
+    			var canvas = document.getElementById("boardCanvas");
+    			board = new Board(canvas);
     			board.start();
     			assignKeyListener();
     		} );
