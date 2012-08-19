@@ -1,0 +1,26 @@
+<!doctype html>
+
+<link rel="stylesheet" type="text/css" href="../css/style.css" />
+<script type="text/javascript" src="../js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="../js/handlebars-1.0.0.beta.6.js"></script>
+<script type="text/javascript" src="../js/utils.js"></script>
+<script type="text/javascript" src="../js/actions.js"></script>
+<script type="text/javascript" src="../js/board.js"></script>
+<script type="text/javascript" src="../js/equation.js"></script>
+<script id="equation-template" type="text/x-handlebars-template">
+	<div class="equation" id={{id}}>
+		<p class="operand">{{first}}</p>
+		<p class="operation">{{operation}}</p>
+		<p class="operand">{{second}}</p>
+	</div>
+</script>
+
+<html>
+
+<body>
+<div class="board">
+	<img class="play_button" src="../assets/play.png"> 
+</div>
+
+</body>
+</html>
