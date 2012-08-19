@@ -1,5 +1,5 @@
 var Board = Class.extend({
-	
+
 	init: function(canvas){
 		this.context = canvas.getContext("2d");
 		this.context.font = "28pt Calibri";
@@ -11,13 +11,16 @@ var Board = Class.extend({
 		this.answers = [];
 
 		this.newEquationInterval = 1000 * 2;
+
+		this.currentDifficulty = 0;
+		this.settings = difficulty[this.currentDifficulty];
 	},
 
 	generateEquation : function() {
-		var firstOperand = getRandomInt(0,10);
-		var secondOperand = getRandomInt(0,10);
+		var firstOperand = getRandomInt(this.settings.min, this.settings.max);
+		var secondOperand = getRandomInt(this.settings.min, this.settings.max);
 		var equation = new Equation({boardSize:this.boardSize,
-							 equation: {first:firstOperand, second:secondOperand, operation:"+"}});
+							 equation: {first:firstOperand, second:secondOperand, operation:this.settings.operation}});
 
 		var text = equation.toString();
 		var textWidth = this.context.measureText(text).width;
@@ -36,10 +39,19 @@ var Board = Class.extend({
 		setTimeout( function() { self.addNewEquation(); } , self.newEquationInterval);
 	},
 
+	increaseDifficulty : function() {
+		this.settings = difficulty[this.currentDifficulty];
+		if (this.currentDifficulty + 1 < difficulty.length)
+			this.currentDifficulty++;
+		var self = this;
+		setTimeout( function() { self.increaseDifficulty(); } , self.settings.interval);
+	},
+
 	
 	start: function () {
 		this.addNewEquation();
 		this.draw();
+		this.increaseDifficulty();
 	},
 
 	keyPressed: function(number) {

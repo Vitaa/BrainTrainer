@@ -6,7 +6,17 @@ var Equation = Class.extend({
 	},
 
 	check : function (answer) {
-		return (this.equation.first + this.equation.second === answer);
+		switch (this.equation.operation) {
+			case "+": {
+				return (this.equation.first + this.equation.second === answer);
+			}
+			case "*": {
+				return (this.equation.first * this.equation.second === answer);
+			}
+			case "/": {
+				return (this.equation.first / this.equation.second === answer);	
+			}
+		}
 	},
 
 	toString : function() {
