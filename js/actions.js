@@ -1,8 +1,7 @@
 $(document).ready(function() {
 
 	var boardContainer = $(".board"),
-		animationDuration = 600,
-	    board;
+		animationDuration = 600;
 
 	$(".play_button").on("click", function() {
 		var self = $(this);
@@ -18,20 +17,9 @@ $(document).ready(function() {
     		animationDuration, 
     		function () {
     			var canvas = $("#boardCanvas").show().get(0);
-    			board = new Board(canvas);
-    			board.start();
-    			assignKeyListener();
+    			var game = new Game(canvas, [$(".mistake1"), $(".mistake2"), $(".mistake3")]);
     		} );
 		});
 	});
 
-	function assignKeyListener() {
-		$('body').keydown(function(event) {
-			var keyString = String.fromCharCode(event.keyCode);
-			var intValue = +keyString;
-			if (!isNaN(intValue)) {
-				board.keyPressed(intValue);
-			}
-		});
-	}
 });

@@ -1,6 +1,7 @@
 var Board = Class.extend({
 
-	init: function(canvas){
+	init: function(canvas, game){
+		this.game = game;
 		this.context = canvas.getContext("2d");
 		this.context.font = "28pt Calibri";
         this.context.fillStyle = "white";
@@ -14,6 +15,8 @@ var Board = Class.extend({
 
 		this.currentDifficulty = 0;
 		this.settings = difficulty[this.currentDifficulty];
+
+		this.stopped = false;
 	},
 
 	generateEquation : function() {
@@ -75,6 +78,9 @@ var Board = Class.extend({
 		// TODO: decrease "life" count
 	},
 
+	stop: function() {
+		this.stopped = true;
+	},
 
 	// canvas
 	clear : function() {
@@ -82,6 +88,9 @@ var Board = Class.extend({
 	},
 
 	draw : function() {
+		if (this.stopped)
+			return;
+
 		this.clear();
 		
 		var toDelete = [];
@@ -100,6 +109,8 @@ var Board = Class.extend({
 		for (var i = 0; i < toDelete.length; i++) {
 			var equation = toDelete[i];
 			this.missedEquation(equation);
+
+			this.game.madeMistake();
 		}
 
 		var self = this;
