@@ -1,19 +1,23 @@
 $(document).ready(function() {
 
 	var boardContainer = $(".board"),
-	    equationTemplate = $("#equation-template").html();
-	var board;
+		animationDuration = 600,
+	    board;
+
 	$(".play_button").on("click", function() {
 		var self = $(this);
 		self.animate({
 			opacity: 0,
-		}, 600, function() {
+		}, 
+		animationDuration, 
+		function() {
 			self.remove();
     		boardContainer.animate({
     			height:"+=420"
-    		}, 600, function () {
-    			$("#boardCanvas").show();
-    			var canvas = document.getElementById("boardCanvas");
+    		}, 
+    		animationDuration, 
+    		function () {
+    			var canvas = $("#boardCanvas").show().get(0);
     			board = new Board(canvas);
     			board.start();
     			assignKeyListener();
@@ -22,7 +26,6 @@ $(document).ready(function() {
 	});
 
 	function assignKeyListener() {
-		console.log(board);
 		$('body').keydown(function(event) {
 			var keyString = String.fromCharCode(event.keyCode);
 			var intValue = +keyString;
@@ -30,6 +33,5 @@ $(document).ready(function() {
 				board.keyPressed(intValue);
 			}
 		});
-}
-
- });
+	}
+});

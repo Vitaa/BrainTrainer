@@ -2,7 +2,7 @@ var Equation = Class.extend({
 	init: function(config) {
 		this.equation = config.equation;
 		this.boardSize = config.boardSize;
-		this.position = {x: getRandomInt(0, this.boardSize.width - 100) , y:40};
+		this.position = {x:0, y:20};
 	},
 
 	check : function (answer) {
@@ -11,5 +11,5 @@ var Equation = Class.extend({
 
 	toString : function() {
 		return (this.equation.first + " " + this.equation.operation + " " + this.equation.second);
-	}	
+	},	
 });

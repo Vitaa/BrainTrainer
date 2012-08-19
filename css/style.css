@@ -22,17 +22,3 @@ body, html { padding: 0; margin: 0; }
 	width: 118px;
 	height: 119px;
 }
-
-.equation {
-	position: relative;
-	display: inline-block;
-	margin-top: 0px;
-	float: left;
-}
-
-.equation > p {
-	text-align: center;
-	color: white;
-	display: inline;
-	font-size: 1.5em;
-}

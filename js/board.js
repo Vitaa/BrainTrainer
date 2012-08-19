@@ -1,7 +1,8 @@
 var Board = Class.extend({
+	
 	init: function(canvas){
 		this.context = canvas.getContext("2d");
-		this.context.font = "30pt Calibri";
+		this.context.font = "28pt Calibri";
         this.context.fillStyle = "white";
 		
 		this.boardSize = {width: 600, height:620};
@@ -9,19 +10,20 @@ var Board = Class.extend({
 		this.equations = [];
 		this.answers = [];
 
-		this.newEquationInterval = 1000 * 8;
-	},
-  
-    addEquationToBoard : function(equation) {
-		this.equations.push(equation);
+		this.newEquationInterval = 1000 * 2;
 	},
 
 	generateEquation : function() {
 		var firstOperand = getRandomInt(0,10);
 		var secondOperand = getRandomInt(0,10);
-
-		return new Equation({boardSize:this.boardSize,
+		var equation = new Equation({boardSize:this.boardSize,
 							 equation: {first:firstOperand, second:secondOperand, operation:"+"}});
+
+		var text = equation.toString();
+		var textWidth = this.context.measureText(text).width;
+		equation.position.x = getRandomInt(0, this.boardSize.width - textWidth);
+		
+		this.equations.push(equation);
 	},
 
 	popEquation : function(equation) {
@@ -29,22 +31,20 @@ var Board = Class.extend({
 	},
 
 	addNewEquation : function() {
-		var equation = this.generateEquation();
-		this.addEquationToBoard(equation);
+		this.generateEquation();
+		var self = this;
+		setTimeout( function() { self.addNewEquation(); } , self.newEquationInterval);
 	},
 
 	
 	start: function () {
 		this.addNewEquation();
 		this.draw();
-		// var self = this;
-		// setTimeout( function() { self.start(); } , self.newEquationInterval);
-
 	},
 
 	keyPressed: function(number) {
 		this.answers.push(number);
-		var currentEquation = this.equations[this.equations.length-1],
+		var currentEquation = this.equations[0],
 			answersLen = this.answers.length;
 
 		for (var i=1; i<answersLen+1; i++) {
@@ -53,14 +53,14 @@ var Board = Class.extend({
 
 				this.answers = [];
 				this.popEquation(currentEquation);
-				this.addNewEquation();
 			}
 		}
 	},
 
 	missedEquation: function (equation) {
 		this.popEquation(equation);
-		this.addNewEquation();
+
+		// TODO: decrease "life" count
 	},
 
 
@@ -72,7 +72,8 @@ var Board = Class.extend({
 	draw : function() {
 		this.clear();
 		
-		for (var i = 0; i < this.equations.length; i++) {
+		var toDelete = [];
+		for (var i in this.equations) {
 			var equation = this.equations[i];
 
 			this.context.fillText(equation.toString(), equation.position.x, equation.position.y);
@@ -80,11 +81,16 @@ var Board = Class.extend({
 			equation.position.y += 1;
 
 			if (equation.position.y >= this.boardSize.height) {
-				this.missedEquation(equation);
-			}
+				toDelete.push(equation);
+			}			
+		}
+
+		for (var i = 0; i < toDelete.length; i++) {
+			var equation = toDelete[i];
+			this.missedEquation(equation);
 		}
 
 		var self = this;
-		setTimeout( function() { self.draw(); } , 50);
+		setTimeout( function() { self.draw(); } , 40);
 	}
 });
