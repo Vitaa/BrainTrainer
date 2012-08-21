@@ -1,7 +1,7 @@
 body, html { 
 	padding: 0; 
-	margin: auto;
-	width: 700px;
+	margin: 10px auto;
+	width: 810px;
  }
 
 #boardCanvas {
@@ -27,9 +27,27 @@ body, html {
 	height: 119px;
 }
 
+.enter_field {
+	display: inline-block;
+	float: left;
+	width: 100px;
+	height: 40px;
+	border: 2px solid #b3b1b1;
+	border-radius: 5px;
+	background-color: #e3dfdf;
+	text-align: center;
+	margin-right: 20px;
+	margin-top: 70px;
+}
+
+.enter_field > .text {
+	font-size: 25px;
+	margin: 0.3em;
+}
+
 .mistakes {
 	float: right;
-	display: inline;
+	display: inline-block;
 }
 
 .mistakes > img {

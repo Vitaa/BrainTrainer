@@ -17,7 +17,8 @@ $(document).ready(function() {
     		animationDuration, 
     		function () {
     			var canvas = $("#boardCanvas").show().get(0);
-    			var game = new Game(canvas, [$(".mistake1"), $(".mistake2"), $(".mistake3")]);
+    			var enterField = $(".enter_field > .text");
+    			var game = new Game(canvas, [$(".mistake1"), $(".mistake2"), $(".mistake3")], enterField);
     		} );
 		});
 	});

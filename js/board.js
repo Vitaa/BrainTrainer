@@ -9,7 +9,6 @@ var Board = Class.extend({
 		this.boardSize = {width: 600, height:620};
 
 		this.equations = [];
-		this.answers = [];
 
 		this.newEquationInterval = 1000 * 2;
 
@@ -57,18 +56,20 @@ var Board = Class.extend({
 		this.increaseDifficulty();
 	},
 
-	keyPressed: function(number) {
-		this.answers.push(number);
-		var currentEquation = this.equations[0],
-			answersLen = this.answers.length;
+	checkAnswer: function(number) {
+		
+		var toDelete = [];
 
-		for (var i=1; i<answersLen+1; i++) {
-			var answer = this.answers.slice(answersLen-i, answersLen).join("");
-			if (currentEquation.check(+answer)) {
-
-				this.answers = [];
-				this.popEquation(currentEquation);
+		for (var i in this.equations) {
+			var equation = this.equations[i];
+			if (equation.check(number)) {
+				toDelete.push(equation);
 			}
+		}
+
+		for (var i in toDelete) {
+			var equation = toDelete[i];
+			this.popEquation(equation);
 		}
 	},
 
