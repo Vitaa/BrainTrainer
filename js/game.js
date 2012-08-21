@@ -21,7 +21,6 @@ var Game = Class.extend({
 			 
 			if (currentText.length > 0) {
 				if (code == ENTER_KEY_CODE) {
-
 					self.board.checkAnswer(+currentText);
 					self.enterField.text("");
 					return;

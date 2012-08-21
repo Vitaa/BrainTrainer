@@ -107,11 +107,9 @@ var Board = Class.extend({
 			}			
 		}
 
-		for (var i = 0; i < toDelete.length; i++) {
-			var equation = toDelete[i];
-			this.missedEquation(equation);
-
+		if (toDelete.length > 0) {
 			this.game.madeMistake();
+			this.equations = [];
 		}
 
 		var self = this;
