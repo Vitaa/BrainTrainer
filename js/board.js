@@ -13,16 +13,14 @@ var Board = Class.extend({
 		this.newEquationInterval = 1000 * 2;
 
 		this.currentDifficulty = 0;
-		this.settings = difficulty[this.currentDifficulty];
+		this.solved = 0;
 
 		this.stopped = false;
 	},
 
 	generateEquation : function() {
-		var firstOperand = getRandomInt(this.settings.min, this.settings.max);
-		var secondOperand = getRandomInt(this.settings.min, this.settings.max);
-		var equation = new Equation({boardSize:this.boardSize,
-							 equation: {first:firstOperand, second:secondOperand, operation:this.settings.operation}});
+		var conditions = this.settings.conditions;
+		var equation = new Equation({boardSize:this.boardSize, conditions: conditions[getRandomInt(0, conditions.length-1)]});
 
 		var text = equation.toString();
 		var textWidth = this.context.measureText(text).width;
@@ -37,23 +35,33 @@ var Board = Class.extend({
 
 	addNewEquation : function() {
 		this.generateEquation();
+		// var self = this;
+		// setTimeout( function() { self.addNewEquation(); } , self.newEquationInterval);
+	},
+
+	rearrangeNewEquationWithInterval : function () {
+		clearTimeout(this.newEquationTimeout);
+		this.newEquationWithInterval();
+	},
+
+	newEquationWithInterval : function() {
 		var self = this;
-		setTimeout( function() { self.addNewEquation(); } , self.newEquationInterval);
+		self.newEquationTimeout = setTimeout( function() { self.addNewEquation(); self.newEquationWithInterval(); } , self.settings.interval);
 	},
 
 	increaseDifficulty : function() {
+		this.solved = 0;
 		this.settings = difficulty[this.currentDifficulty];
-		if (this.currentDifficulty + 1 < difficulty.length)
+		if (this.currentDifficulty + 1 < difficulty.length) 
 			this.currentDifficulty++;
-		var self = this;
-		setTimeout( function() { self.increaseDifficulty(); } , self.settings.interval);
+		this.rearrangeNewEquationWithInterval();
 	},
 
 	
 	start: function () {
+		this.increaseDifficulty();
 		this.addNewEquation();
 		this.draw();
-		this.increaseDifficulty();
 	},
 
 	checkAnswer: function(number) {
@@ -71,12 +79,15 @@ var Board = Class.extend({
 			var equation = toDelete[i];
 			this.popEquation(equation);
 		}
-	},
 
-	missedEquation: function (equation) {
-		this.popEquation(equation);
-
-		// TODO: decrease "life" count
+		if (toDelete.length) {
+			this.addNewEquation();
+			this.rearrangeNewEquationWithInterval();
+		}
+		this.solved += toDelete.length;
+		if (this.solved >= this.settings.solved) {
+			this.increaseDifficulty();
+		}
 	},
 
 	stop: function() {
@@ -89,12 +100,12 @@ var Board = Class.extend({
 	},
 
 	draw : function() {
+		this.clear();
+
 		if (this.stopped)
 			return;
-
-		this.clear();
 		
-		var toDelete = [];
+		var missed = [];
 		for (var i in this.equations) {
 			var equation = this.equations[i];
 
@@ -103,16 +114,18 @@ var Board = Class.extend({
 			equation.position.y += 1;
 
 			if (equation.position.y >= this.boardSize.height) {
-				toDelete.push(equation);
+			missed.push(equation);
 			}			
 		}
 
-		if (toDelete.length > 0) {
+		if (missed.length > 0) {
 			this.game.madeMistake();
 			this.equations = [];
+			this.addNewEquation();
+			this.rearrangeNewEquationWithInterval();
 		}
 
 		var self = this;
-		setTimeout( function() { self.draw(); } , 40);
+		setTimeout( function() { self.draw(); } , this.settings.speed);
 	}
 });
