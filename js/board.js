@@ -16,6 +16,7 @@ var Board = Class.extend({
 		this.solved = 0;
 
 		this.stopped = false;
+		this.totalEquationsCount = 0;
 	},
 
 	generateEquation : function() {
@@ -85,6 +86,7 @@ var Board = Class.extend({
 			this.rearrangeNewEquationWithInterval();
 		}
 		this.solved += toDelete.length;
+		this.totalEquationsCount += toDelete.length;
 		if (this.solved >= this.settings.solved) {
 			this.increaseDifficulty();
 		}

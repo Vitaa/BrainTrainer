@@ -48,7 +48,7 @@ var Game = Class.extend({
 		this.mistakesCount++;
 		if (this.mistakesCount == this.mistakes.length) {
 			this.board.stop();
-			console.log("Game Over!")
+			alert("Game Over!\n\n You solved " + this.board.totalEquationsCount + " equations.");
 		}
 	}
 });
