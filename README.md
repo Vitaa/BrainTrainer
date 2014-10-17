@@ -10,3 +10,4 @@ Try to solve arithmetic problems as fast as you can, but remember - you do not h
 
 This game was created for JS Hackathon in Omsk in 2012.
 
+![Game](https://raw.githubusercontent.com/Vitaa/BrainTrainer/master/screenshots/1.png)
